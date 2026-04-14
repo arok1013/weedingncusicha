@@ -2,12 +2,16 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>The Wedding of Bagus & Icha</title>
     
-    <!-- Tailwind & Fonts -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Premium Wedding Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Dancing+Script:wght@400;500;600;700&family=Montserrat:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&family=Great+Vibes&display=swap" rel="stylesheet">
+    
+    <!-- Libraries -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
     
@@ -15,31 +19,21 @@
     <link rel="stylesheet" href="css/style.css">
     
     <style>
+        /* Additional inline styles for critical elements */
         html { scroll-behavior: smooth; }
-        .fade-section { opacity: 0; transform: translateY(40px); transition: all 1s ease; }
-        .fade-section.show { opacity: 1; transform: translateY(0); }
         body.loaded { overflow: auto; }
         #overlay { transition: opacity 1.2s cubic-bezier(0.77, 0, 0.175, 1), visibility 1.2s; }
         #overlay.hidden { opacity: 0; visibility: hidden; }
         #main-content { transition: opacity 1s ease 0.3s; }
         #main-content.visible { opacity: 1 !important; }
-        .music-toggle { position: fixed; bottom: 20px; right: 20px; z-index: 1000; }
-        
-        /* Love Story Image Styles */
-        .story-img {
-            transition: all 0.5s ease;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-        .story-img:hover {
-            transform: scale(1.05);
-            box-shadow: 0 20px 40px rgba(212, 175, 55, 0.2);
-        }
+        .fade-section { opacity: 0; transform: translateY(40px); transition: all 1s ease; }
+        .fade-section.show { opacity: 1; transform: translateY(0); }
     </style>
 </head>
-<body class="bg-[#fdfaf2] text-gray-800 antialiased overflow-hidden">
+<body class="bg-[#fdf8ed] text-gray-800 overflow-hidden">
 
     <!-- BACKGROUND MUSIC -->
-    <audio id="wedding-music" loop>
+    <audio id="wedding-music" loop preload="auto">
         <source src="assets/music/Bruno Mars - Risk It All.mp3" type="audio/mpeg">
     </audio>
 
@@ -48,26 +42,27 @@
     <!-- ==================== -->
     <div id="overlay" class="fixed inset-0 z-[999] flex flex-col items-center justify-center bg-cover bg-center text-white text-center" 
          style="background-image: url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80');">
-        <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/70"></div>
-        <div class="relative z-10 px-4 animate__animated animate__fadeIn">
-            <h2 class="text-xl md:text-2xl uppercase tracking-[0.5em] mb-6 font-light">The Wedding of</h2>
-            <h1 class="text-7xl md:text-9xl font-serif mb-8 drop-shadow-2xl">Bagus & Icha</h1>
-            <p class="text-lg md:text-xl mb-12 font-light tracking-wider">12 April 2030</p>
+        <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/80"></div>
+        <div class="relative z-10 px-4 animate__animated animate__fadeInUp">
+            <h2 class="elegant-subtitle text-sm md:text-base tracking-[0.5em] mb-4 font-light">The Wedding of</h2>
+            <h1 class="wedding-name text-6xl md:text-8xl lg:text-9xl mb-6 drop-shadow-2xl">Bagus & Icha</h1>
+            <div class="w-16 h-px bg-white/40 mx-auto my-6"></div>
+            <p class="elegant-body text-sm md:text-base tracking-wider">12 April 2030</p>
             
-            <div class="mb-12 bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/20 max-w-sm mx-auto shadow-2xl">
-                <p class="text-sm italic mb-3 font-light">Kepada Yth. Bapak/Ibu/Saudara/i</p>
-                <h3 class="text-2xl font-bold tracking-wide" id="guest-name">Tamu Undangan</h3>
+            <div class="mt-12 mb-10 bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/20 max-w-sm mx-auto">
+                <p class="elegant-body text-xs italic mb-2 opacity-80">Kepada Yth. Bapak/Ibu/Saudara/i</p>
+                <h3 class="font-serif text-2xl font-semibold tracking-wide" id="guest-name">Tamu Undangan</h3>
             </div>
             
-            <button id="open-invitation-btn" class="btn-gold px-12 py-4 rounded-full font-bold uppercase tracking-widest text-sm shadow-2xl group">
-                <i class="fa-regular fa-envelope-open mr-2 group-hover:animate-bounce"></i> Buka Undangan
+            <button id="open-invitation-btn" class="btn-gold px-10 py-4 rounded-full font-medium tracking-widest text-sm shadow-2xl transition-all duration-300 hover:scale-105">
+                <i class="fa-regular fa-envelope-open mr-2"></i> Buka Undangan
             </button>
         </div>
     </div>
 
     <!-- MUSIC TOGGLE BUTTON -->
     <div class="music-toggle hidden" id="music-toggle">
-        <button id="music-btn" class="bg-white/90 backdrop-blur-sm p-3 rounded-full shadow-xl text-gold hover:scale-110 transition-all playing">
+        <button id="music-btn" class="music-btn">
             <i class="fas fa-pause"></i>
         </button>
     </div>
@@ -76,73 +71,68 @@
     <main id="main-content" class="hidden opacity-0">
         
         <!-- ==================== -->
-        <!-- 2. SALAM PEMBUKA DENGAN FOTO PREWEDDING BESAR -->
+        <!-- 2. SALAM PEMBUKA DENGAN FOTO PREWEDDING -->
         <!-- ==================== -->
-        <section class="min-h-screen flex flex-col items-center justify-center text-center px-4 py-12 relative overflow-hidden fade-section">
-            <!-- Background Decoration -->
-            <div class="absolute inset-0 opacity-5 pointer-events-none" style="background-image: url('https://www.transparenttextures.com/patterns/cream-paper.png');"></div>
+        <section class="min-h-screen flex flex-col items-center justify-center text-center px-4 py-12 md:py-16 relative overflow-hidden fade-section">
+            <div class="absolute inset-0 opacity-3 pointer-events-none bg-pattern"></div>
             
             <div class="max-w-7xl mx-auto relative z-10 w-full">
                 
                 <!-- Foto Prewedding Besar -->
-                <div class="mb-12 relative">
+                <div class="mb-10 md:mb-12 relative">
                     <div class="relative inline-block max-w-5xl mx-auto">
-                        <!-- Bingkai dekoratif luar -->
-                        <div class="absolute -inset-3 md:-inset-5 border-2 border-gold/30 rounded-3xl"></div>
-                        <div class="absolute -inset-1.5 md:-inset-2 border border-gold/20 rounded-2xl"></div>
+                        <div class="absolute -inset-3 md:-inset-5 border-2 border-gold/20 rounded-3xl"></div>
+                        <div class="absolute -inset-1.5 md:-inset-2 border border-gold/10 rounded-2xl"></div>
                         
-                        <!-- Foto Utama -->
                         <img src="assets/img/ncuschaai.jpg" 
                              alt="Bagus & Icha Prewedding"
-                             class="w-full max-w-5xl h-[400px] md:h-[550px] lg:h-[600px] object-cover rounded-2xl shadow-2xl border-4 border-white relative z-10"
+                             class="w-full max-w-5xl h-[350px] md:h-[500px] lg:h-[550px] object-cover rounded-2xl shadow-2xl border-4 border-white relative z-10"
                              onerror="this.src='https://images.pexels.com/photos/3014856/pexels-photo-3014856.jpeg?auto=compress&cs=tinysrgb&w=1200'">
                         
-                        <!-- Gradient Overlay -->
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent rounded-2xl z-20 pointer-events-none"></div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent rounded-2xl z-20 pointer-events-none"></div>
                         
-                        <!-- Overlay teks pada foto -->
-                        <div class="absolute bottom-0 left-0 right-0 p-6 md:p-10 rounded-b-2xl z-30 text-white text-left">
-                            <p class="text-lg md:text-3xl font-serif tracking-wider">Bagus & Icha</p>
-                            <p class="text-sm md:text-base opacity-80 mt-1">12 April 2030</p>
+                        <div class="absolute bottom-0 left-0 right-0 p-6 md:p-8 rounded-b-2xl z-30 text-white text-left">
+                            <p class="font-serif text-xl md:text-3xl tracking-wide">Bagus & Icha</p>
+                            <p class="elegant-body text-xs md:text-sm opacity-90 mt-1">12 April 2030</p>
                         </div>
                     </div>
                 </div>
                 
                 <!-- Bismillah -->
-                <p class="text-2xl md:text-4xl font-serif text-gold mb-6">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
+                <p class="font-serif text-3xl md:text-5xl text-gold mb-6 leading-relaxed">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
                 
                 <!-- Salam -->
-                <h2 class="text-2xl md:text-4xl font-serif text-gray-800 mb-6">Assalamu'alaikum Warahmatullahi Wabarakatuh</h2>
+                <h2 class="font-serif text-2xl md:text-4xl text-gray-800 mb-6 font-medium">Assalamu'alaikum Warahmatullahi Wabarakatuh</h2>
                 
                 <!-- Teks Pembuka -->
-                <div class="max-w-4xl mx-auto">
-                    <p class="text-gray-600 text-base md:text-xl leading-relaxed mb-4">
+                <div class="max-w-3xl mx-auto">
+                    <p class="elegant-body text-gray-700 text-base md:text-lg leading-relaxed mb-4">
                         Dengan memohon rahmat dan ridho Allah SWT, kami bermaksud menyelenggarakan pernikahan kami.
                     </p>
-                    <p class="text-gray-600 text-base md:text-xl leading-relaxed">
+                    <p class="elegant-body text-gray-700 text-base md:text-lg leading-relaxed">
                         Merupakan suatu kebahagiaan bagi kami untuk dapat berbagi momen istimewa ini bersama 
                         Bapak/Ibu/Saudara/i sekalian.
                     </p>
                 </div>
                 
-                <!-- Nama Pasangan (Mobile Only) -->
-                <div class="mt-10 md:hidden">
-                    <p class="text-3xl font-serif text-gold">Bagus Firdha Mahendra</p>
-                    <p class="text-xl font-serif text-gray-400 my-1">&</p>
-                    <p class="text-3xl font-serif text-gold">Icha Raisa Nurhadi</p>
+                <!-- ==================== -->
+                <!-- COUNTDOWN TIMER (DIPINDAHKAN KE SINI) -->
+                <!-- ==================== -->
+                <div class="mt-12 md:mt-16">
+                    <div id="countdown" class="flex gap-3 md:gap-6 justify-center flex-wrap"></div>
                 </div>
                 
                 <!-- Ornamen -->
-                <div class="flex justify-center items-center gap-4 mt-10">
-                    <div class="w-12 md:w-20 h-[1px] bg-gold/40"></div>
-                    <i class="fas fa-heart text-gold text-sm md:text-base"></i>
-                    <div class="w-12 md:w-20 h-[1px] bg-gold/40"></div>
+                <div class="flex justify-center items-center gap-4 mt-12">
+                    <div class="w-16 md:w-24 h-px bg-gold/30"></div>
+                    <i class="fas fa-heart text-gold text-xs md:text-sm"></i>
+                    <div class="w-16 md:w-24 h-px bg-gold/30"></div>
                 </div>
                 
                 <!-- Scroll Indicator -->
                 <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce hidden md:block">
-                    <a href="#mempelai-section" class="text-gold/60 hover:text-gold transition-colors">
-                        <i class="fas fa-chevron-down text-xl"></i>
+                    <a href="#mempelai-section" class="text-gold/50 hover:text-gold transition-colors">
+                        <i class="fas fa-chevron-down text-lg"></i>
                     </a>
                 </div>
             </div>
@@ -151,27 +141,27 @@
         <!-- ==================== -->
         <!-- 3. NAMA MEMPELAI -->
         <!-- ==================== -->
-        <section id="mempelai-section" class="py-20 px-6 bg-white/50 fade-section">
+        <section id="mempelai-section" class="py-16 md:py-24 px-6 bg-white/60 fade-section">
             <div class="max-w-6xl mx-auto">
-                <div class="text-center mb-16">
-                    <h2 class="text-4xl md:text-5xl font-serif mb-4 text-gray-900">Mempelai</h2>
-                    <div class="w-24 h-[2px] bg-gold mx-auto"></div>
+                <div class="text-center mb-12 md:mb-16">
+                    <h2 class="font-serif text-4xl md:text-5xl lg:text-6xl mb-4 text-gray-900 font-semibold">Mempelai</h2>
+                    <div class="w-20 h-px bg-gold mx-auto"></div>
                 </div>
                 
-                <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
                     <!-- Mempelai Pria -->
                     <div class="text-center">
                         <div class="relative inline-block mb-6">
                             <div class="absolute inset-0 border-2 border-gold/30 rounded-full scale-110"></div>
                             <img src="assets/img/ncus1.jpeg" 
-                                 class="w-48 h-48 md:w-64 md:h-64 object-cover rounded-full border-8 border-white shadow-2xl relative z-10"
+                                 class="w-40 h-40 md:w-56 md:h-56 object-cover rounded-full border-4 border-white shadow-2xl relative z-10"
                                  alt="Bagus"
                                  onerror="this.src='https://images.pexels.com/photos/1516680/pexels-photo-1516680.jpeg?auto=compress&cs=tinysrgb&w=600'">
                         </div>
-                        <h3 class="text-3xl font-serif text-gray-800 mb-2">Bagus Firdha Mahendra</h3>
-                        <p class="text-gray-500 mb-4">Putra pertama dari</p>
-                        <p class="text-lg font-medium">Bapak Dian & Ibu Tri</p>
-                        <p class="text-sm text-gray-400 mt-2">Jember</p>
+                        <h3 class="font-serif text-2xl md:text-3xl text-gray-800 mb-2 font-semibold">Bagus Firdha Mahendra</h3>
+                        <p class="elegant-body text-gray-500 text-sm mb-3">Putra pertama dari</p>
+                        <p class="font-serif text-lg font-medium text-gray-700">Bapak Dian & Ibu Tri</p>
+                        <p class="elegant-body text-sm text-gray-400 mt-2">Jember</p>
                     </div>
                     
                     <!-- Mempelai Wanita -->
@@ -179,19 +169,19 @@
                         <div class="relative inline-block mb-6">
                             <div class="absolute inset-0 border-2 border-gold/30 rounded-full scale-110"></div>
                             <img src="assets/img/icha1.jpeg" 
-                                 class="w-48 h-48 md:w-64 md:h-64 object-cover rounded-full border-8 border-white shadow-2xl relative z-10"
+                                 class="w-40 h-40 md:w-56 md:h-56 object-cover rounded-full border-4 border-white shadow-2xl relative z-10"
                                  alt="Icha"
                                  onerror="this.src='https://images.pexels.com/photos/3211476/pexels-photo-3211476.jpeg?auto=compress&cs=tinysrgb&w=600'">
                         </div>
-                        <h3 class="text-3xl font-serif text-gray-800 mb-2">Icha Raisa Nurhadi</h3>
-                        <p class="text-gray-500 mb-4">Putri kedua dari</p>
-                        <p class="text-lg font-medium">Bapak Hadi & Ibu Nurul</p>
-                        <p class="text-sm text-gray-400 mt-2">Jember</p>
+                        <h3 class="font-serif text-2xl md:text-3xl text-gray-800 mb-2 font-semibold">Icha Raisa Nurhadi</h3>
+                        <p class="elegant-body text-gray-500 text-sm mb-3">Putri kedua dari</p>
+                        <p class="font-serif text-lg font-medium text-gray-700">Bapak Hadi & Ibu Nurul</p>
+                        <p class="elegant-body text-sm text-gray-400 mt-2">Jember</p>
                     </div>
                 </div>
                 
-                <div class="text-center mt-16">
-                    <p class="text-5xl font-serif text-gold">&</p>
+                <div class="text-center mt-12 md:mt-16">
+                    <p class="font-script text-5xl md:text-6xl text-gold">&</p>
                 </div>
             </div>
         </section>
@@ -199,38 +189,42 @@
         <!-- ==================== -->
         <!-- 4. DETAIL ACARA -->
         <!-- ==================== -->
-        <section class="py-20 px-6 bg-[#fdfaf2] fade-section">
+        <section class="py-16 md:py-24 px-6 bg-[#fdf8ed] fade-section">
             <div class="max-w-5xl mx-auto">
-                <div class="text-center mb-12">
-                    <h2 class="text-4xl md:text-5xl font-serif mb-4 text-gray-900">Detail Acara</h2>
-                    <div class="w-24 h-[2px] bg-gold mx-auto"></div>
+                <div class="text-center mb-10 md:mb-12">
+                    <h2 class="font-serif text-4xl md:text-5xl lg:text-6xl mb-4 text-gray-900 font-semibold">Detail Acara</h2>
+                    <div class="w-20 h-px bg-gold mx-auto"></div>
                 </div>
                 
-                <div class="grid md:grid-cols-2 gap-8">
+                <div class="grid md:grid-cols-2 gap-6 md:gap-8">
                     <!-- Akad Nikah -->
-                    <div class="bg-white p-8 rounded-3xl shadow-lg border border-gold/10">
+                    <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-gold/10 hover:shadow-xl transition-shadow">
                         <div class="text-center">
-                            <i class="fas fa-ring text-4xl text-gold mb-4"></i>
-                            <h3 class="text-2xl font-serif mb-4">Akad Nikah</h3>
-                            <div class="space-y-3 text-gray-600">
-                                <p><i class="far fa-calendar-alt mr-2 text-gold"></i> Sabtu, 12 April 2030</p>
-                                <p><i class="far fa-clock mr-2 text-gold"></i> 08:00 - 10:00 WIB</p>
-                                <p><i class="fas fa-map-marker-alt mr-2 text-gold"></i> New Sari Utama Convention Hall</p>
-                                <p class="text-sm text-gray-400 mt-2">Karang Miuwo, Mangli, Kec. Kaliwates, Kabupaten Jember</p>
+                            <div class="w-16 h-16 rounded-full bg-gold/10 flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-ring text-2xl text-gold"></i>
+                            </div>
+                            <h3 class="font-serif text-2xl md:text-3xl mb-4 font-semibold">Akad Nikah</h3>
+                            <div class="space-y-3 elegant-body text-gray-600">
+                                <p><i class="far fa-calendar-alt mr-2 text-gold w-5"></i> Sabtu, 12 April 2030</p>
+                                <p><i class="far fa-clock mr-2 text-gold w-5"></i> 08:00 - 10:00 WIB</p>
+                                <p><i class="fas fa-map-marker-alt mr-2 text-gold w-5"></i> New Sari Utama Convention Hall</p>
+                                <p class="text-sm text-gray-400 mt-3 leading-relaxed">Karang Miuwo, Mangli, Kec. Kaliwates, Kabupaten Jember</p>
                             </div>
                         </div>
                     </div>
                     
                     <!-- Resepsi -->
-                    <div class="bg-white p-8 rounded-3xl shadow-lg border border-gold/10">
+                    <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-gold/10 hover:shadow-xl transition-shadow">
                         <div class="text-center">
-                            <i class="fas fa-glass-cheers text-4xl text-gold mb-4"></i>
-                            <h3 class="text-2xl font-serif mb-4">Resepsi Pernikahan</h3>
-                            <div class="space-y-3 text-gray-600">
-                                <p><i class="far fa-calendar-alt mr-2 text-gold"></i> Sabtu, 12 April 2030</p>
-                                <p><i class="far fa-clock mr-2 text-gold"></i> 11:00 - 14:00 WIB</p>
-                                <p><i class="fas fa-map-marker-alt mr-2 text-gold"></i> New Sari Utama Convention Hall</p>
-                                <p class="text-sm text-gray-400 mt-2">Karang Miuwo, Mangli, Kec. Kaliwates, Kabupaten Jember</p>
+                            <div class="w-16 h-16 rounded-full bg-gold/10 flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-glass-cheers text-2xl text-gold"></i>
+                            </div>
+                            <h3 class="font-serif text-2xl md:text-3xl mb-4 font-semibold">Resepsi Pernikahan</h3>
+                            <div class="space-y-3 elegant-body text-gray-600">
+                                <p><i class="far fa-calendar-alt mr-2 text-gold w-5"></i> Sabtu, 12 April 2030</p>
+                                <p><i class="far fa-clock mr-2 text-gold w-5"></i> 11:00 - 14:00 WIB</p>
+                                <p><i class="fas fa-map-marker-alt mr-2 text-gold w-5"></i> New Sari Utama Convention Hall</p>
+                                <p class="text-sm text-gray-400 mt-3 leading-relaxed">Karang Miuwo, Mangli, Kec. Kaliwates, Kabupaten Jember</p>
                             </div>
                         </div>
                     </div>
@@ -241,119 +235,107 @@
         <!-- ==================== -->
         <!-- 5. LOKASI / MAPS -->
         <!-- ==================== -->
-        <section class="py-20 px-6 bg-white/50 fade-section">
+        <section class="py-16 md:py-24 px-6 bg-white/60 fade-section">
             <div class="max-w-5xl mx-auto text-center">
-                <h2 class="text-4xl md:text-5xl font-serif mb-4 text-gray-900">Lokasi Acara</h2>
-                <div class="w-24 h-[2px] bg-gold mx-auto mb-12"></div>
+                <h2 class="font-serif text-4xl md:text-5xl lg:text-6xl mb-4 text-gray-900 font-semibold">Lokasi Acara</h2>
+                <div class="w-20 h-px bg-gold mx-auto mb-10 md:mb-12"></div>
                 
-                <div class="rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
+                <div class="rounded-2xl overflow-hidden shadow-2xl border-4 border-white">
                     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3249.812878670301!2d113.65336927401326!3d-8.188679191842844!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd69159e391f56f%3A0xdf53aec90e84603a!2sNew%20Sari%20Utama%20Convention%20Hall!5e1!3m2!1sid!2sid!4v1776166738532!5m2!1sid!2sid" 
-                            width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                            width="100%" height="350" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
                 </div>
                 
                 <a href="https://maps.app.goo.gl/Mhz1ivTbHrL6Y18B8" target="_blank" 
-                   class="btn-gold px-10 py-4 rounded-xl inline-flex items-center gap-3 text-white mt-8 shadow-lg">
-                    <i class="fas fa-map-marked-alt"></i> Lihat Lokasi di Google Maps
+                   class="btn-gold px-8 py-3 rounded-full inline-flex items-center gap-2 text-white mt-8 shadow-lg hover:shadow-xl transition-all">
+                    <i class="fas fa-map-marked-alt"></i> <span class="elegant-body text-sm">Lihat Lokasi di Google Maps</span>
                 </a>
             </div>
         </section>
 
         <!-- ==================== -->
-        <!-- 6. COUNTDOWN TIMER -->
+        <!-- 6. LOVE STORY -->
         <!-- ==================== -->
-        <section class="py-20 px-6 bg-gradient-to-b from-[#fdfaf2] to-white fade-section">
-            <div class="max-w-4xl mx-auto text-center">
-                <h2 class="text-4xl md:text-5xl font-serif mb-4 text-gray-900">Menuju Hari Bahagia</h2>
-                <div class="w-24 h-[2px] bg-gold mx-auto mb-12"></div>
-                
-                <div id="countdown" class="flex gap-3 md:gap-6 justify-center flex-wrap"></div>
-            </div>
-        </section>
-
-        <!-- ==================== -->
-        <!-- 7. LOVE STORY DENGAN FOTO -->
-        <!-- ==================== -->
-        <section class="py-20 px-6 bg-white fade-section">
+        <section class="py-16 md:py-24 px-6 bg-white fade-section">
             <div class="max-w-5xl mx-auto">
-                <div class="text-center mb-16">
-                    <h2 class="text-4xl md:text-5xl font-serif mb-4 text-gray-900">Our Love Story</h2>
-                    <div class="w-24 h-[2px] bg-gold mx-auto"></div>
-                    <p class="text-gray-500 italic mt-4">Perjalanan cinta kami menuju hari bahagia</p>
+                <div class="text-center mb-12 md:mb-16">
+                    <h2 class="font-serif text-4xl md:text-5xl lg:text-6xl mb-4 text-gray-900 font-semibold">Our Love Story</h2>
+                    <div class="w-20 h-px bg-gold mx-auto"></div>
+                    <p class="elegant-body text-gray-500 italic mt-4">Perjalanan cinta kami menuju hari bahagia</p>
                 </div>
                 
-                <!-- Story 1: Pertemuan Pertama -->
-                <div class="flex flex-col md:flex-row items-center gap-8 mb-16">
+                <!-- Story 1 -->
+                <div class="flex flex-col md:flex-row items-center gap-6 md:gap-10 mb-12 md:mb-16">
                     <div class="md:w-1/2">
-                        <div class="relative overflow-hidden rounded-3xl shadow-xl">
+                        <div class="relative overflow-hidden rounded-2xl shadow-xl">
                             <img src="assets/img/firstdatee.jpeg" 
                                  alt="Pertemuan Pertama"
-                                 class="w-full h-[300px] object-cover story-img"
+                                 class="w-full h-[280px] object-cover story-img"
                                  onerror="this.src='https://images.pexels.com/photos/3184195/pexels-photo-3184195.jpeg?auto=compress&cs=tinysrgb&w=600'">
-                            <div class="absolute top-4 left-4 bg-gold text-white px-4 py-1 rounded-full text-sm font-medium">
+                            <div class="absolute top-4 left-4 bg-gold text-white px-4 py-1 rounded-full text-xs font-medium">
                                 2025
                             </div>
                         </div>
                     </div>
                     <div class="md:w-1/2 text-center md:text-left">
                         <div class="flex items-center gap-3 mb-4 justify-center md:justify-start">
-                            <div class="w-12 h-12 rounded-full bg-gold/10 flex items-center justify-center">
-                                <i class="fas fa-handshake text-xl text-gold"></i>
+                            <div class="w-10 h-10 rounded-full bg-gold/10 flex items-center justify-center">
+                                <i class="fas fa-handshake text-gold"></i>
                             </div>
-                            <h3 class="text-2xl font-serif text-gray-800">Pertemuan Pertama</h3>
+                            <h3 class="font-serif text-xl md:text-2xl text-gray-800 font-semibold">Pertemuan Pertama</h3>
                         </div>
-                        <p class="text-gray-600 leading-relaxed">
-                            Takdir mempertemukan Ncus dan Icha di sebuah kedai kopi bernama Sorai pada tahun 2025, di Kabupaten Jember. Pertemuan sederhana itu menjadi awal dari kisah yang tak terduga.
+                        <p class="elegant-body text-gray-600 leading-relaxed">
+                            Takdir mempertemukan Bagus dan Icha di sebuah kedai kopi bernama Sorai pada tahun 2025, di Kabupaten Jember. Pertemuan sederhana itu menjadi awal dari kisah yang tak terduga.
                         </p>
                     </div>
                 </div>
                 
-                <!-- Story 2: Mulai Serius -->
-                <div class="flex flex-col md:flex-row-reverse items-center gap-8 mb-16">
+                <!-- Story 2 -->
+                <div class="flex flex-col md:flex-row-reverse items-center gap-6 md:gap-10 mb-12 md:mb-16">
                     <div class="md:w-1/2">
-                        <div class="relative overflow-hidden rounded-3xl shadow-xl">
+                        <div class="relative overflow-hidden rounded-2xl shadow-xl">
                             <img src="assets/img/serious.jpeg" 
                                  alt="Mulai Serius"
-                                 class="w-full h-[300px] object-cover story-img"
+                                 class="w-full h-[280px] object-cover story-img"
                                  onerror="this.src='https://images.pexels.com/photos/3184423/pexels-photo-3184423.jpeg?auto=compress&cs=tinysrgb&w=600'">
-                            <div class="absolute top-4 right-4 bg-gold text-white px-4 py-1 rounded-full text-sm font-medium">
+                            <div class="absolute top-4 right-4 bg-gold text-white px-4 py-1 rounded-full text-xs font-medium">
                                 2026
                             </div>
                         </div>
                     </div>
                     <div class="md:w-1/2 text-center md:text-left">
                         <div class="flex items-center gap-3 mb-4 justify-center md:justify-start">
-                            <div class="w-12 h-12 rounded-full bg-gold/10 flex items-center justify-center">
-                                <i class="fas fa-heart text-xl text-gold"></i>
+                            <div class="w-10 h-10 rounded-full bg-gold/10 flex items-center justify-center">
+                                <i class="fas fa-heart text-gold"></i>
                             </div>
-                            <h3 class="text-2xl font-serif text-gray-800">Mulai Serius</h3>
+                            <h3 class="font-serif text-xl md:text-2xl text-gray-800 font-semibold">Mulai Serius</h3>
                         </div>
-                        <p class="text-gray-600 leading-relaxed">
+                        <p class="elegant-body text-gray-600 leading-relaxed">
                             Setelah setahun berteman dan saling mengenal, kami memutuskan untuk menjalin hubungan yang lebih serius di tahun 2026. Dari sinilah kami yakin bahwa kami ditakdirkan untuk bersama.
                         </p>
                     </div>
                 </div>
                 
-                <!-- Story 3: Lamaran -->
-                <div class="flex flex-col md:flex-row items-center gap-8">
+                <!-- Story 3 -->
+                <div class="flex flex-col md:flex-row items-center gap-6 md:gap-10">
                     <div class="md:w-1/2">
-                        <div class="relative overflow-hidden rounded-3xl shadow-xl">
+                        <div class="relative overflow-hidden rounded-2xl shadow-xl">
                             <img src="assets/img/lamaran.jpeg" 
                                  alt="Lamaran"
-                                 class="w-full h-[300px] object-cover story-img"
+                                 class="w-full h-[280px] object-cover story-img"
                                  onerror="this.src='https://images.pexels.com/photos/1687790/pexels-photo-1687790.jpeg?auto=compress&cs=tinysrgb&w=600'">
-                            <div class="absolute top-4 left-4 bg-gold text-white px-4 py-1 rounded-full text-sm font-medium">
+                            <div class="absolute top-4 left-4 bg-gold text-white px-4 py-1 rounded-full text-xs font-medium">
                                 2029
                             </div>
                         </div>
                     </div>
                     <div class="md:w-1/2 text-center md:text-left">
                         <div class="flex items-center gap-3 mb-4 justify-center md:justify-start">
-                            <div class="w-12 h-12 rounded-full bg-gold/10 flex items-center justify-center">
-                                <i class="fas fa-ring text-xl text-gold"></i>
+                            <div class="w-10 h-10 rounded-full bg-gold/10 flex items-center justify-center">
+                                <i class="fas fa-ring text-gold"></i>
                             </div>
-                            <h3 class="text-2xl font-serif text-gray-800">Lamaran</h3>
+                            <h3 class="font-serif text-xl md:text-2xl text-gray-800 font-semibold">Lamaran</h3>
                         </div>
-                        <p class="text-gray-600 leading-relaxed">
+                        <p class="elegant-body text-gray-600 leading-relaxed">
                             Di sebuah taman yang indah di Bandung, Bagus berlutut dan melamar Icha. Dengan penuh haru, Icha pun mengucapkan "Iya". Momen ini menjadi awal baru dalam perjalanan cinta kami.
                         </p>
                     </div>
@@ -362,46 +344,46 @@
         </section>
 
         <!-- ==================== -->
-        <!-- 8. GALERI FOTO -->
+        <!-- 7. GALERI FOTO -->
         <!-- ==================== -->
-        <section class="py-20 px-6 bg-[#fdfaf2] fade-section">
+        <section class="py-16 md:py-24 px-6 bg-[#fdf8ed] fade-section">
             <div class="max-w-6xl mx-auto text-center">
-                <h2 class="text-4xl md:text-5xl font-serif mb-4 text-gray-900">Galeri Kenangan</h2>
-                <div class="w-24 h-[2px] bg-gold mx-auto mb-12"></div>
+                <h2 class="font-serif text-4xl md:text-5xl lg:text-6xl mb-4 text-gray-900 font-semibold">Galeri Kenangan</h2>
+                <div class="w-20 h-px bg-gold mx-auto mb-10 md:mb-12"></div>
                 
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <img src="assets/img/ncus.jpeg" class="w-full aspect-square object-cover rounded-2xl shadow-lg hover:scale-105 transition duration-500 gallery-img" alt="Gallery" onerror="this.src='https://images.pexels.com/photos/3028961/pexels-photo-3028961.jpeg?auto=compress&cs=tinysrgb&w=600'">
-                    <img src="assets/img/ncus1.jpeg" class="w-full aspect-square object-cover rounded-2xl shadow-lg hover:scale-105 transition duration-500 gallery-img" alt="Gallery" onerror="this.src='https://images.pexels.com/photos/3014856/pexels-photo-3014856.jpeg?auto=compress&cs=tinysrgb&w=600'">
-                    <img src="assets/img/ncus2.jpeg" class="w-full aspect-square object-cover rounded-2xl shadow-lg hover:scale-105 transition duration-500 gallery-img" alt="Gallery" onerror="this.src='https://images.pexels.com/photos/2896421/pexels-photo-2896421.jpeg?auto=compress&cs=tinysrgb&w=600'">
-                    <img src="assets/img/ncus3.jpeg" class="w-full aspect-square object-cover rounded-2xl shadow-lg hover:scale-105 transition duration-500 gallery-img" alt="Gallery" onerror="this.src='https://images.pexels.com/photos/2959192/pexels-photo-2959192.jpeg?auto=compress&cs=tinysrgb&w=600'">
-                    <img src="assets/img/icha.jpeg" class="w-full aspect-square object-cover rounded-2xl shadow-lg hover:scale-105 transition duration-500 gallery-img" alt="Gallery" onerror="this.src='https://images.pexels.com/photos/3206176/pexels-photo-3206176.jpeg?auto=compress&cs=tinysrgb&w=600'">
-                    <img src="assets/img/icha1.jpeg" class="w-full aspect-square object-cover rounded-2xl shadow-lg hover:scale-105 transition duration-500 gallery-img" alt="Gallery" onerror="this.src='https://images.pexels.com/photos/1687790/pexels-photo-1687790.jpeg?auto=compress&cs=tinysrgb&w=600'">
-                    <img src="assets/img/icha2.jpeg" class="w-full aspect-square object-cover rounded-2xl shadow-lg hover:scale-105 transition duration-500 gallery-img" alt="Gallery" onerror="this.src='https://images.pexels.com/photos/1730877/pexels-photo-1730877.jpeg?auto=compress&cs=tinysrgb&w=600'">
-                    <img src="assets/img/icha3.jpeg" class="w-full aspect-square object-cover rounded-2xl shadow-lg hover:scale-105 transition duration-500 gallery-img" alt="Gallery" onerror="this.src='https://images.pexels.com/photos/1024993/pexels-photo-1024993.jpeg?auto=compress&cs=tinysrgb&w=600'">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+                    <img src="assets/img/ncus.jpeg" class="w-full aspect-square object-cover rounded-xl shadow-lg hover:scale-105 transition duration-500 gallery-img" alt="Gallery" onerror="this.src='https://images.pexels.com/photos/3028961/pexels-photo-3028961.jpeg?auto=compress&cs=tinysrgb&w=600'">
+                    <img src="assets/img/ncus1.jpeg" class="w-full aspect-square object-cover rounded-xl shadow-lg hover:scale-105 transition duration-500 gallery-img" alt="Gallery" onerror="this.src='https://images.pexels.com/photos/3014856/pexels-photo-3014856.jpeg?auto=compress&cs=tinysrgb&w=600'">
+                    <img src="assets/img/ncus2.jpeg" class="w-full aspect-square object-cover rounded-xl shadow-lg hover:scale-105 transition duration-500 gallery-img" alt="Gallery" onerror="this.src='https://images.pexels.com/photos/2896421/pexels-photo-2896421.jpeg?auto=compress&cs=tinysrgb&w=600'">
+                    <img src="assets/img/ncus3.jpeg" class="w-full aspect-square object-cover rounded-xl shadow-lg hover:scale-105 transition duration-500 gallery-img" alt="Gallery" onerror="this.src='https://images.pexels.com/photos/2959192/pexels-photo-2959192.jpeg?auto=compress&cs=tinysrgb&w=600'">
+                    <img src="assets/img/icha.jpeg" class="w-full aspect-square object-cover rounded-xl shadow-lg hover:scale-105 transition duration-500 gallery-img" alt="Gallery" onerror="this.src='https://images.pexels.com/photos/3206176/pexels-photo-3206176.jpeg?auto=compress&cs=tinysrgb&w=600'">
+                    <img src="assets/img/icha1.jpeg" class="w-full aspect-square object-cover rounded-xl shadow-lg hover:scale-105 transition duration-500 gallery-img" alt="Gallery" onerror="this.src='https://images.pexels.com/photos/1687790/pexels-photo-1687790.jpeg?auto=compress&cs=tinysrgb&w=600'">
+                    <img src="assets/img/icha2.jpeg" class="w-full aspect-square object-cover rounded-xl shadow-lg hover:scale-105 transition duration-500 gallery-img" alt="Gallery" onerror="this.src='https://images.pexels.com/photos/1730877/pexels-photo-1730877.jpeg?auto=compress&cs=tinysrgb&w=600'">
+                    <img src="assets/img/icha3.jpeg" class="w-full aspect-square object-cover rounded-xl shadow-lg hover:scale-105 transition duration-500 gallery-img" alt="Gallery" onerror="this.src='https://images.pexels.com/photos/1024993/pexels-photo-1024993.jpeg?auto=compress&cs=tinysrgb&w=600'">
                 </div>
             </div>
         </section>
 
         <!-- ==================== -->
-        <!-- 9. UCAPAN & DOA (RSVP) -->
+        <!-- 8. UCAPAN & DOA (RSVP) -->
         <!-- ==================== -->
-        <section class="py-20 px-6 bg-white fade-section" id="rsvp">
+        <section class="py-16 md:py-24 px-6 bg-white fade-section" id="rsvp">
             <div class="max-w-3xl mx-auto">
-                <div class="text-center mb-12">
-                    <h2 class="text-4xl md:text-5xl font-serif mb-4 text-gray-900">Ucapan & Doa</h2>
-                    <div class="w-24 h-[2px] bg-gold mx-auto mb-4"></div>
-                    <p class="text-gray-500 italic">Berikan doa dan restu terbaik untuk kami</p>
+                <div class="text-center mb-10 md:mb-12">
+                    <h2 class="font-serif text-4xl md:text-5xl lg:text-6xl mb-4 text-gray-900 font-semibold">Ucapan & Doa</h2>
+                    <div class="w-20 h-px bg-gold mx-auto mb-4"></div>
+                    <p class="elegant-body text-gray-500 italic">Berikan doa dan restu terbaik untuk kami</p>
                 </div>
                 
-                <form id="rsvp-form" class="space-y-6 bg-[#fdfaf2]/50 p-8 md:p-12 rounded-[30px] border border-gold/10 shadow-xl">
-                    <div class="grid md:grid-cols-2 gap-6">
+                <form id="rsvp-form" class="space-y-5 bg-[#fdf8ed]/50 p-6 md:p-10 rounded-2xl border border-gold/10 shadow-lg">
+                    <div class="grid md:grid-cols-2 gap-5">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Nama Lengkap</label>
-                            <input type="text" name="nama" placeholder="Tuliskan nama Anda" class="w-full bg-white border border-gray-200 p-4 rounded-xl outline-none focus:border-gold focus:ring-2 focus:ring-gold/20 transition-all" required>
+                            <label class="block elegant-body text-sm font-medium text-gray-700 mb-2">Nama Lengkap</label>
+                            <input type="text" name="nama" placeholder="Tuliskan nama Anda" class="w-full bg-white border border-gray-200 p-3 rounded-xl outline-none focus:border-gold focus:ring-2 focus:ring-gold/20 transition-all elegant-body" required>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Konfirmasi Kehadiran</label>
-                            <select name="kehadiran" class="w-full bg-white border border-gray-200 p-4 rounded-xl outline-none focus:border-gold focus:ring-2 focus:ring-gold/20 transition-all">
+                            <label class="block elegant-body text-sm font-medium text-gray-700 mb-2">Konfirmasi Kehadiran</label>
+                            <select name="kehadiran" class="w-full bg-white border border-gray-200 p-3 rounded-xl outline-none focus:border-gold focus:ring-2 focus:ring-gold/20 transition-all elegant-body">
                                 <option value="Hadir">Insya Allah, Saya Hadir</option>
                                 <option value="Tidak Hadir">Mohon Maaf, Berhalangan</option>
                                 <option value="Ragu-ragu">Masih Ragu-ragu</option>
@@ -410,22 +392,22 @@
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Ucapan & Doa</label>
-                        <textarea name="pesan" placeholder="Tuliskan doa dan ucapan untuk kedua mempelai..." class="w-full bg-white border border-gray-200 p-4 rounded-xl h-32 outline-none focus:border-gold focus:ring-2 focus:ring-gold/20 transition-all" required></textarea>
+                        <label class="block elegant-body text-sm font-medium text-gray-700 mb-2">Ucapan & Doa</label>
+                        <textarea name="pesan" placeholder="Tuliskan doa dan ucapan untuk kedua mempelai..." class="w-full bg-white border border-gray-200 p-3 rounded-xl h-28 outline-none focus:border-gold focus:ring-2 focus:ring-gold/20 transition-all elegant-body" required></textarea>
                     </div>
 
-                    <button type="submit" id="submit-btn" class="w-full btn-gold text-white py-4 rounded-xl font-semibold shadow-xl transition-all active:scale-95">
+                    <button type="submit" id="submit-btn" class="w-full btn-gold text-white py-3 rounded-xl font-medium shadow-lg transition-all active:scale-95 elegant-body">
                         <i class="fa-regular fa-paper-plane mr-2"></i> Kirim Doa Restu
                     </button>
                 </form>
 
-                <div class="mt-16">
-                    <div class="flex justify-between items-end mb-6 border-b border-gray-200 pb-4">
-                        <h4 class="text-2xl font-serif text-gray-800">Doa & Restu Terkini</h4>
-                        <span class="text-sm bg-gold/10 text-gold px-4 py-1.5 rounded-full font-medium" id="comment-count">0 Ucapan</span>
+                <div class="mt-12 md:mt-16">
+                    <div class="flex justify-between items-end mb-5 border-b border-gray-200 pb-3">
+                        <h4 class="font-serif text-xl md:text-2xl text-gray-800 font-semibold">Doa & Restu Terkini</h4>
+                        <span class="elegant-body text-xs bg-gold/10 text-gold px-3 py-1 rounded-full font-medium" id="comment-count">0 Ucapan</span>
                     </div>
                     
-                    <div id="wishes-list" class="space-y-4 max-h-[500px] overflow-y-auto pr-2 custom-scroll">
+                    <div id="wishes-list" class="space-y-3 max-h-[500px] overflow-y-auto pr-2 custom-scroll">
                         <div class="text-center py-8 text-gray-400" id="wishes-loading">
                             <i class="fas fa-circle-notch fa-spin text-2xl text-gold"></i>
                         </div>
@@ -435,122 +417,122 @@
         </section>
 
         <!-- ==================== -->
-        <!-- 10. AMPLOP DIGITAL -->
+        <!-- 9. AMPLOP DIGITAL -->
         <!-- ==================== -->
-        <section class="py-20 px-6 bg-[#fdfaf2] fade-section">
-            <div class="max-w-3xl mx-auto text-center">
-                <h2 class="text-4xl md:text-5xl font-serif mb-4 text-gray-900">Amplop Digital</h2>
-                <div class="w-24 h-[2px] bg-gold mx-auto mb-4"></div>
-                <p class="text-gray-500 italic mb-12">Doa restu Anda adalah hadiah terindah. Namun jika ingin memberi amplop, dapat melalui:</p>
+        <section class="py-16 md:py-24 px-6 bg-[#fdf8ed] fade-section">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="font-serif text-4xl md:text-5xl lg:text-6xl mb-4 text-gray-900 font-semibold">Amplop Digital</h2>
+                <div class="w-20 h-px bg-gold mx-auto mb-4"></div>
+                <p class="elegant-body text-gray-500 italic mb-10 md:mb-12">Doa restu Anda adalah hadiah terindah. Namun jika ingin memberi amplop, dapat melalui:</p>
 
-                <div class="grid md:grid-cols-3 gap-6">
-                    <div class="bg-white p-6 rounded-2xl shadow-lg border border-gold/10">
-                        <i class="fas fa-university text-3xl text-gold mb-4"></i>
-                        <p class="font-bold text-lg">Bank BCA</p>
-                        <p class="text-xl tracking-widest my-2">1234567890</p>
-                        <p class="text-gray-500 text-sm">a.n Bagus Firdha Mahendra</p>
-                        <button class="copy-btn mt-4 text-sm text-gold hover:underline" data-rekening="1234567890">
+                <div class="grid md:grid-cols-3 gap-5">
+                    <div class="bg-white p-5 rounded-xl shadow-lg border border-gold/10 hover:shadow-xl transition-shadow">
+                        <i class="fas fa-university text-2xl text-gold mb-3"></i>
+                        <p class="font-serif font-semibold text-lg">Bank BCA</p>
+                        <p class="font-mono text-base tracking-wider my-2">1234567890</p>
+                        <p class="elegant-body text-gray-500 text-xs">a.n Bagus Firdha Mahendra</p>
+                        <button class="copy-btn mt-3 elegant-body text-xs text-gold hover:underline" data-rekening="1234567890">
                             <i class="far fa-copy mr-1"></i> Salin
                         </button>
                     </div>
                     
-                    <div class="bg-white p-6 rounded-2xl shadow-lg border border-gold/10">
-                        <i class="fas fa-mobile-alt text-3xl text-gold mb-4"></i>
-                        <p class="font-bold text-lg">DANA / OVO</p>
-                        <p class="text-xl tracking-widest my-2">081234567890</p>
-                        <p class="text-gray-500 text-sm">a.n Icha Raisa Nurhadi</p>
-                        <button class="copy-btn mt-4 text-sm text-gold hover:underline" data-rekening="081234567890">
+                    <div class="bg-white p-5 rounded-xl shadow-lg border border-gold/10 hover:shadow-xl transition-shadow">
+                        <i class="fas fa-mobile-alt text-2xl text-gold mb-3"></i>
+                        <p class="font-serif font-semibold text-lg">DANA / OVO</p>
+                        <p class="font-mono text-base tracking-wider my-2">081234567890</p>
+                        <p class="elegant-body text-gray-500 text-xs">a.n Icha Raisa Nurhadi</p>
+                        <button class="copy-btn mt-3 elegant-body text-xs text-gold hover:underline" data-rekening="081234567890">
                             <i class="far fa-copy mr-1"></i> Salin
                         </button>
                     </div>
                     
-                    <div class="bg-white p-6 rounded-2xl shadow-lg border border-gold/10">
-                        <i class="fas fa-gift text-3xl text-gold mb-4"></i>
-                        <p class="font-bold text-lg">Alamat Kirim</p>
-                        <p class="text-sm my-2">Jl. Mawar No.123<br>Sumbersari, Jember</p>
-                        <p class="text-gray-500 text-sm">a.n Bagus & Icha</p>
+                    <div class="bg-white p-5 rounded-xl shadow-lg border border-gold/10 hover:shadow-xl transition-shadow">
+                        <i class="fas fa-gift text-2xl text-gold mb-3"></i>
+                        <p class="font-serif font-semibold text-lg">Alamat Kirim</p>
+                        <p class="elegant-body text-sm my-2 leading-relaxed">Jl. Mawar No.123<br>Sumbersari, Jember</p>
+                        <p class="elegant-body text-gray-500 text-xs">a.n Bagus & Icha</p>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- ==================== -->
-        <!-- 11. PROTOKOL / INFORMASI TAMBAHAN -->
+        <!-- 10. PROTOKOL / INFORMASI TAMBAHAN -->
         <!-- ==================== -->
-        <section class="py-20 px-6 bg-white fade-section">
-            <div class="max-w-3xl mx-auto text-center">
-                <h2 class="text-4xl md:text-5xl font-serif mb-4 text-gray-900">Informasi Tambahan</h2>
-                <div class="w-24 h-[2px] bg-gold mx-auto mb-12"></div>
+        <section class="py-16 md:py-24 px-6 bg-white fade-section">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="font-serif text-4xl md:text-5xl lg:text-6xl mb-4 text-gray-900 font-semibold">Informasi Tambahan</h2>
+                <div class="w-20 h-px bg-gold mx-auto mb-10 md:mb-12"></div>
                 
-                <div class="grid md:grid-cols-2 gap-6 text-left">
-                    <div class="bg-[#fdfaf2] p-6 rounded-2xl">
-                        <i class="fas fa-tshirt text-2xl text-gold mb-3"></i>
-                        <h4 class="font-semibold text-lg mb-2">Dress Code</h4>
-                        <p class="text-gray-600">Kami menyarankan tamu untuk mengenakan pakaian formal bernuansa earth tone atau pastel.</p>
+                <div class="grid md:grid-cols-2 gap-5 text-left">
+                    <div class="bg-[#fdf8ed] p-5 rounded-xl">
+                        <i class="fas fa-tshirt text-xl text-gold mb-3"></i>
+                        <h4 class="font-serif font-semibold text-lg mb-1">Dress Code</h4>
+                        <p class="elegant-body text-gray-600 text-sm">Kami menyarankan tamu untuk mengenakan pakaian formal bernuansa earth tone atau pastel.</p>
                     </div>
                     
-                    <div class="bg-[#fdfaf2] p-6 rounded-2xl">
-                        <i class="fas fa-shield-alt text-2xl text-gold mb-3"></i>
-                        <h4 class="font-semibold text-lg mb-2">Protokol Kesehatan</h4>
-                        <p class="text-gray-600">Demi kenyamanan bersama, kami menyediakan hand sanitizer dan masker di lokasi.</p>
+                    <div class="bg-[#fdf8ed] p-5 rounded-xl">
+                        <i class="fas fa-shield-alt text-xl text-gold mb-3"></i>
+                        <h4 class="font-serif font-semibold text-lg mb-1">Protokol Kesehatan</h4>
+                        <p class="elegant-body text-gray-600 text-sm">Demi kenyamanan bersama, kami menyediakan hand sanitizer dan masker di lokasi.</p>
                     </div>
                     
-                    <div class="bg-[#fdfaf2] p-6 rounded-2xl">
-                        <i class="fas fa-parking text-2xl text-gold mb-3"></i>
-                        <h4 class="font-semibold text-lg mb-2">Area Parkir</h4>
-                        <p class="text-gray-600">Tersedia area parkir luas dengan bantuan petugas yang akan mengarahkan.</p>
+                    <div class="bg-[#fdf8ed] p-5 rounded-xl">
+                        <i class="fas fa-parking text-xl text-gold mb-3"></i>
+                        <h4 class="font-serif font-semibold text-lg mb-1">Area Parkir</h4>
+                        <p class="elegant-body text-gray-600 text-sm">Tersedia area parkir luas dengan bantuan petugas yang akan mengarahkan.</p>
                     </div>
                     
-                    <div class="bg-[#fdfaf2] p-6 rounded-2xl">
-                        <i class="fas fa-child text-2xl text-gold mb-3"></i>
-                        <h4 class="font-semibold text-lg mb-2">Anak-anak</h4>
-                        <p class="text-gray-600">Kami menyediakan area bermain anak agar para orang tua dapat menikmati acara.</p>
+                    <div class="bg-[#fdf8ed] p-5 rounded-xl">
+                        <i class="fas fa-child text-xl text-gold mb-3"></i>
+                        <h4 class="font-serif font-semibold text-lg mb-1">Anak-anak</h4>
+                        <p class="elegant-body text-gray-600 text-sm">Kami menyediakan area bermain anak agar para orang tua dapat menikmati acara.</p>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- ==================== -->
-        <!-- 12. PENUTUP -->
+        <!-- 11. PENUTUP -->
         <!-- ==================== -->
-        <section class="py-20 px-6 bg-gradient-to-b from-[#fdfaf2] to-white fade-section">
+        <section class="py-16 md:py-24 px-6 bg-gradient-to-b from-[#fdf8ed] to-white fade-section">
             <div class="max-w-3xl mx-auto text-center">
                 <div class="mb-8">
                     <img src="assets/img/ncuschaai.jpg" 
-                         class="w-32 h-32 object-cover rounded-full mx-auto border-4 border-white shadow-xl"
+                         class="w-24 h-24 object-cover rounded-full mx-auto border-4 border-white shadow-xl"
                          onerror="this.src='https://images.pexels.com/photos/3184423/pexels-photo-3184423.jpeg?auto=compress&cs=tinysrgb&w=600'">
                 </div>
                 
-                <p class="text-xl text-gray-600 italic leading-relaxed mb-12">
+                <p class="elegant-quote text-lg md:text-xl text-gray-600 leading-relaxed mb-10">
                     "Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i 
                     berkenan hadir dan memberikan doa restu. Kehadiran Anda akan melengkapi kebahagiaan 
                     di hari istimewa kami."
                 </p>
                 
-                <p class="text-3xl font-serif text-gold mb-4">Jazakumullah Khairan Katsiran</p>
-                <p class="text-gray-500 mb-8">Terima Kasih atas doa dan restunya</p>
+                <p class="font-serif text-2xl md:text-3xl text-gold mb-3">Jazakumullah Khairan Katsiran</p>
+                <p class="elegant-body text-gray-500">Terima Kasih atas doa dan restunya</p>
             </div>
         </section>
 
         <!-- ==================== -->
-        <!-- 13. FOOTER -->
+        <!-- 12. FOOTER -->
         <!-- ==================== -->
-        <footer class="py-16 text-center bg-white border-t border-gold/10 fade-section">
+        <footer class="py-12 text-center bg-white border-t border-gold/10 fade-section">
             <div class="max-w-4xl mx-auto px-6">
-                <h3 class="text-3xl md:text-4xl font-serif text-gray-800 mb-4">Bagus & Icha</h3>
-                <p class="text-gold text-lg mb-2">12 April 2030</p>
-                <p class="text-gray-400 text-sm">#APIPIII</p>
+                <h3 class="font-serif text-2xl md:text-3xl text-gray-800 mb-2 font-semibold">Bagus & Icha</h3>
+                <p class="elegant-body text-gold text-sm mb-1">12 April 2030</p>
+                <p class="elegant-body text-gray-400 text-xs">#APIPIII</p>
                 
-                <div class="flex justify-center gap-4 mt-8">
-                    <a href="#" class="w-10 h-10 rounded-full bg-gold/10 flex items-center justify-center text-gold hover:bg-gold hover:text-white transition-all">
-                        <i class="fab fa-instagram"></i>
+                <div class="flex justify-center gap-3 mt-6">
+                    <a href="#" class="w-8 h-8 rounded-full bg-gold/10 flex items-center justify-center text-gold hover:bg-gold hover:text-white transition-all">
+                        <i class="fab fa-instagram text-sm"></i>
                     </a>
-                    <a href="#" class="w-10 h-10 rounded-full bg-gold/10 flex items-center justify-center text-gold hover:bg-gold hover:text-white transition-all">
-                        <i class="fab fa-tiktok"></i>
+                    <a href="#" class="w-8 h-8 rounded-full bg-gold/10 flex items-center justify-center text-gold hover:bg-gold hover:text-white transition-all">
+                        <i class="fab fa-tiktok text-sm"></i>
                     </a>
                 </div>
                 
-                <p class="text-gray-400 text-xs mt-8">
+                <p class="elegant-body text-gray-400 text-xs mt-6">
                     Made with <i class="fas fa-heart text-red-400"></i> for our special day
                 </p>
             </div>

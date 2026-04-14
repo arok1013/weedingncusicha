@@ -1,9 +1,9 @@
 (function() {
     "use strict";
 
-    // =====================
+    // ========================================
     // GOOGLE APPS SCRIPT URL
-    // =====================
+    // ========================================
     const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby_DN2pad9OyDl7s2WBgzcny5kZgJCUZ5A97klbrcsHZHxhxf1DMlrDwAYR0gf6cqJixA/exec';
 
     // DOM Elements
@@ -20,35 +20,44 @@
     const commentCountSpan = document.getElementById('comment-count');
     const wishesLoading = document.getElementById('wishes-loading');
 
-    // Guest name from URL
+    // ========================================
+    // GUEST NAME FROM URL
+    // ========================================
     const urlParams = new URLSearchParams(window.location.search);
     const guestParam = urlParams.get('to') || urlParams.get('guest');
     if (guestParam && guestNameSpan) {
         guestNameSpan.textContent = decodeURIComponent(guestParam.replace(/\+/g, ' '));
     }
 
-    // Open Invitation (DENGAN AUTO-PLAY MUSIK)
+    // ========================================
+    // OPEN INVITATION WITH AUTO-PLAY MUSIC
+    // ========================================
     function openInvitation() {
         overlay.classList.add('hidden');
         mainContent.classList.remove('hidden');
         musicToggle.classList.remove('hidden');
         
-        // AUTO-PLAY MUSIK
+        // Auto-play music
         if (music) {
-            music.volume = 0.5;
+            music.volume = 0.4;
             music.play().then(() => {
-                musicBtn.innerHTML = '<i class="fas fa-pause"></i>';
-                musicBtn.classList.add('playing');
+                if (musicBtn) {
+                    musicBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                    musicBtn.classList.add('playing');
+                }
             }).catch(err => {
                 console.log('Autoplay blocked:', err);
-                musicBtn.innerHTML = '<i class="fas fa-music"></i>';
-                musicBtn.classList.remove('playing');
+                if (musicBtn) {
+                    musicBtn.innerHTML = '<i class="fas fa-music"></i>';
+                    musicBtn.classList.remove('playing');
+                }
             });
         }
         
         setTimeout(() => {
             mainContent.classList.add('visible');
             document.body.classList.add('loaded');
+            document.body.style.overflow = 'auto';
         }, 100);
         
         window.scrollTo(0, 0);
@@ -59,7 +68,9 @@
 
     if (openBtn) openBtn.addEventListener('click', openInvitation);
 
-    // Music Toggle
+    // ========================================
+    // MUSIC TOGGLE
+    // ========================================
     if (musicBtn) {
         musicBtn.addEventListener('click', () => {
             if (music.paused) {
@@ -87,7 +98,9 @@
         });
     }
 
-    // Countdown Timer
+    // ========================================
+    // COUNTDOWN TIMER
+    // ========================================
     function updateCountdown() {
         const targetDate = new Date('April 12, 2030 08:00:00').getTime();
         
@@ -97,7 +110,7 @@
             
             if (distance < 0) {
                 clearInterval(timer);
-                if (countdownEl) countdownEl.innerHTML = '<div class="text-3xl font-serif text-gold">Acara telah dimulai!</div>';
+                if (countdownEl) countdownEl.innerHTML = '<div class="text-center"><span class="text-2xl font-serif text-gold">Acara telah dimulai!</span></div>';
                 return;
             }
             
@@ -108,21 +121,21 @@
             
             if (countdownEl) {
                 countdownEl.innerHTML = `
-                    <div class="bg-white p-4 md:p-6 rounded-2xl shadow-xl min-w-[80px] border border-gold/10">
-                        <span class="text-4xl md:text-6xl font-serif text-gold">${days}</span>
-                        <p class="text-xs uppercase tracking-wider mt-2 text-gray-500">Hari</p>
+                    <div>
+                        <span>${days}</span>
+                        <p>Hari</p>
                     </div>
-                    <div class="bg-white p-4 md:p-6 rounded-2xl shadow-xl min-w-[80px] border border-gold/10">
-                        <span class="text-4xl md:text-6xl font-serif text-gold">${hours}</span>
-                        <p class="text-xs uppercase tracking-wider mt-2 text-gray-500">Jam</p>
+                    <div>
+                        <span>${hours}</span>
+                        <p>Jam</p>
                     </div>
-                    <div class="bg-white p-4 md:p-6 rounded-2xl shadow-xl min-w-[80px] border border-gold/10">
-                        <span class="text-4xl md:text-6xl font-serif text-gold">${minutes}</span>
-                        <p class="text-xs uppercase tracking-wider mt-2 text-gray-500">Menit</p>
+                    <div>
+                        <span>${minutes}</span>
+                        <p>Menit</p>
                     </div>
-                    <div class="bg-white p-4 md:p-6 rounded-2xl shadow-xl min-w-[80px] border border-gold/10">
-                        <span class="text-4xl md:text-6xl font-serif text-gold">${seconds}</span>
-                        <p class="text-xs uppercase tracking-wider mt-2 text-gray-500">Detik</p>
+                    <div>
+                        <span>${seconds}</span>
+                        <p>Detik</p>
                     </div>
                 `;
             }
@@ -131,7 +144,9 @@
     
     if (countdownEl) updateCountdown();
 
-    // Copy Rekening
+    // ========================================
+    // COPY REKENING
+    // ========================================
     document.querySelectorAll('.copy-btn').forEach(btn => {
         btn.addEventListener('click', async () => {
             const rekening = btn.dataset.rekening;
@@ -150,8 +165,13 @@
         });
     });
 
-    // Toast Notification
+    // ========================================
+    // TOAST NOTIFICATION
+    // ========================================
     function showToast(message) {
+        const existingToast = document.querySelector('.toast-notification');
+        if (existingToast) existingToast.remove();
+        
         const toast = document.createElement('div');
         toast.className = 'toast-notification';
         toast.textContent = message;
@@ -164,9 +184,9 @@
         }, 2000);
     }
 
-    // =====================
-    // RSVP FORM - KIRIM KE GOOGLE APPS SCRIPT
-    // =====================
+    // ========================================
+    // RSVP FORM - SEND TO GOOGLE APPS SCRIPT
+    // ========================================
     if (rsvpForm) {
         rsvpForm.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -181,28 +201,27 @@
             const kehadiran = formData.get('kehadiran');
             const pesan = formData.get('pesan');
             
-            // Data untuk dikirim
+            if (!nama || !pesan) {
+                showToast('❌ Mohon isi nama dan ucapan doa');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+                return;
+            }
+            
             const postData = new URLSearchParams();
             postData.append('nama', nama);
             postData.append('kehadiran', kehadiran);
             postData.append('pesan', pesan);
             
             try {
-                // Kirim data ke Google Apps Script
                 await fetch(GOOGLE_SCRIPT_URL, {
                     method: 'POST',
                     body: postData
                 });
                 
-                // Reset form
                 rsvpForm.reset();
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = originalText;
-                
-                // Tampilkan pesan sukses
                 showToast('🎉 Terima kasih! Doa restu Anda telah tercatat.');
                 
-                // TAMBAHKAN DATA BARU KE TAMPILAN SECARA OPTIMISTIC
                 addNewWishToDisplay({
                     nama: nama,
                     kehadiran: kehadiran,
@@ -210,35 +229,33 @@
                     timestamp: new Date().toLocaleString('id-ID')
                 });
                 
-                // Refresh data dari server setelah beberapa detik
                 setTimeout(() => {
                     loadWishesFromGoogleSheet();
                 }, 2000);
                 
             } catch (error) {
                 console.error('Error:', error);
+                showToast('❌ Gagal mengirim. Silakan coba lagi.');
+            } finally {
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = originalText;
-                showToast('❌ Gagal mengirim. Silakan coba lagi.');
             }
         });
     }
 
-    // =====================
-    // TAMBAH WISH BARU KE TAMPILAN (OPTIMISTIC UPDATE)
-    // =====================
+    // ========================================
+    // ADD NEW WISH TO DISPLAY (OPTIMISTIC)
+    // ========================================
     function addNewWishToDisplay(wish) {
-        // Sembunyikan loading
         if (wishesLoading) wishesLoading.style.display = 'none';
         
-        // Buat element baru
         const badgeClass = wish.kehadiran === 'Hadir' ? 'badge-hadir' : 'badge-tidak';
         const newWishHTML = `
-            <div class="wish-bubble" style="animation: slideUp 0.5s ease;">
-                <div class="flex justify-between items-start mb-2">
+            <div class="wish-bubble" style="animation: fadeIn 0.5s ease;">
+                <div class="flex justify-between items-start mb-2 flex-wrap gap-2">
                     <div>
                         <h5 class="font-semibold text-gray-800">${escapeHtml(wish.nama)}</h5>
-                        <span class="${badgeClass}">${wish.kehadiran}</span>
+                        <span class="${badgeClass}">${escapeHtml(wish.kehadiran)}</span>
                     </div>
                     <span class="text-xs text-gray-400">Baru saja</span>
                 </div>
@@ -246,30 +263,23 @@
             </div>
         `;
         
-        // Cek apakah ada ucapan sebelumnya
         const existingContent = wishesList.innerHTML;
         
-        if (existingContent.includes('Belum ada ucapan')) {
-            // Jika kosong, ganti seluruh konten
+        if (existingContent.includes('Belum ada ucapan') || existingContent.includes('wishes-loading')) {
             wishesList.innerHTML = newWishHTML;
-            commentCountSpan.textContent = '1 Ucapan';
         } else {
-            // Jika sudah ada, tambahkan di paling atas
             wishesList.innerHTML = newWishHTML + existingContent;
-            
-            // Update count
-            const currentCount = parseInt(commentCountSpan.textContent) || 0;
-            commentCountSpan.textContent = (currentCount + 1) + ' Ucapan';
         }
+        
+        updateCommentCount();
     }
 
-    // =====================
-    // LOAD WISHES DARI GOOGLE SHEETS (DENGAN JSONP)
-    // =====================
+    // ========================================
+    // LOAD WISHES FROM GOOGLE SHEETS
+    // ========================================
     function loadWishesFromGoogleSheet() {
         if (wishesLoading) wishesLoading.style.display = 'flex';
         
-        // Gunakan callback untuk JSONP
         const callbackName = 'jsonpCallback_' + Date.now();
         
         window[callbackName] = function(data) {
@@ -280,83 +290,73 @@
                 loadWishesFromLocalStorage();
             }
             
-            // Cleanup
-            document.head.removeChild(script);
+            if (document.head.contains(script)) document.head.removeChild(script);
             delete window[callbackName];
         };
         
         const script = document.createElement('script');
         script.src = GOOGLE_SCRIPT_URL + '?callback=' + callbackName;
         script.onerror = function() {
-            console.log('JSONP failed, trying fetch...');
-            // Fallback ke fetch dengan mode no-cors
             fetch(GOOGLE_SCRIPT_URL)
-                .then(response => response.text())
-                .then(text => {
-                    try {
-                        const data = JSON.parse(text);
-                        if (Array.isArray(data)) {
-                            displayWishes(data);
-                            localStorage.setItem('wedding_wishes', JSON.stringify(data));
-                        } else {
-                            loadWishesFromLocalStorage();
-                        }
-                    } catch (e) {
+                .then(response => response.json())
+                .then(data => {
+                    if (Array.isArray(data)) {
+                        displayWishes(data);
+                        localStorage.setItem('wedding_wishes', JSON.stringify(data));
+                    } else {
                         loadWishesFromLocalStorage();
                     }
                 })
                 .catch(() => loadWishesFromLocalStorage());
             
-            document.head.removeChild(script);
+            if (document.head.contains(script)) document.head.removeChild(script);
             delete window[callbackName];
         };
         
         document.head.appendChild(script);
     }
 
-    // =====================
-    // LOAD WISHES DARI LOCALSTORAGE (FALLBACK)
-    // =====================
+    // ========================================
+    // LOAD WISHES FROM LOCALSTORAGE
+    // ========================================
     function loadWishesFromLocalStorage() {
         const wishes = JSON.parse(localStorage.getItem('wedding_wishes') || '[]');
         displayWishes(wishes);
     }
 
-    // =====================
+    // ========================================
     // DISPLAY WISHES
-    // =====================
+    // ========================================
     function displayWishes(wishes) {
         if (wishesLoading) wishesLoading.style.display = 'none';
         
         if (!wishes || wishes.length === 0) {
             wishesList.innerHTML = `
                 <div class="text-center py-12 text-gray-400">
-                    <i class="fa-regular fa-message text-4xl mb-4 opacity-30"></i>
-                    <p>Belum ada ucapan. Jadilah yang pertama memberikan doa restu.</p>
+                    <i class="fa-regular fa-message text-4xl mb-3 opacity-30"></i>
+                    <p class="elegant-body text-sm">Belum ada ucapan. Jadilah yang pertama memberikan doa restu.</p>
                 </div>
             `;
-            commentCountSpan.textContent = '0 Ucapan';
+            if (commentCountSpan) commentCountSpan.textContent = '0 Ucapan';
             return;
         }
         
-        // Urutkan dari terbaru
         const sortedWishes = [...wishes].sort((a, b) => {
             return new Date(b.timestamp) - new Date(a.timestamp);
         });
         
-        commentCountSpan.textContent = `${sortedWishes.length} Ucapan`;
+        if (commentCountSpan) commentCountSpan.textContent = `${sortedWishes.length} Ucapan`;
         
         wishesList.innerHTML = sortedWishes.map(wish => {
             const badgeClass = wish.kehadiran === 'Hadir' ? 'badge-hadir' : 'badge-tidak';
-            const date = wish.timestamp ? new Date(wish.timestamp) : new Date();
-            const formattedDate = wish.timestamp ? wish.timestamp.split(',')[0] : `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`;
+            const formattedDate = wish.timestamp ? wish.timestamp.split(',')[0] : new Date().toLocaleDateString('id-ID');
             
             return `
                 <div class="wish-bubble">
-                    <div class="flex justify-between items-start mb-2">
+                    <div class="flex justify-between items-start mb-2 flex-wrap gap-2">
                         <div>
                             <h5 class="font-semibold text-gray-800">${escapeHtml(wish.nama)}</h5>
-                            <span class="${badgeClass}">${wish.kehadiran || 'Hadir'}</span>
+                            <span class="${badgeClass}">${escapeHtml(wish.kehadiran || 'Hadir')}</span>
                         </div>
                         <span class="text-xs text-gray-400">${formattedDate}</span>
                     </div>
@@ -366,9 +366,17 @@
         }).join('');
     }
 
-    // =====================
+    // ========================================
+    // UPDATE COMMENT COUNT
+    // ========================================
+    function updateCommentCount() {
+        const wishItems = wishesList.querySelectorAll('.wish-bubble');
+        if (commentCountSpan) commentCountSpan.textContent = `${wishItems.length} Ucapan`;
+    }
+
+    // ========================================
     // ESCAPE HTML
-    // =====================
+    // ========================================
     function escapeHtml(text) {
         if (!text) return '';
         const div = document.createElement('div');
@@ -376,17 +384,14 @@
         return div.innerHTML;
     }
 
-    // =====================
+    // ========================================
     // LOAD WISHES (INITIAL)
-    // =====================
+    // ========================================
     function loadWishes() {
-        // Coba load dari localStorage dulu (tampilan cepat)
         const localWishes = JSON.parse(localStorage.getItem('wedding_wishes') || '[]');
         if (localWishes.length > 0) {
             displayWishes(localWishes);
         }
-        
-        // Kemudian sync dengan Google Sheets
         loadWishesFromGoogleSheet();
     }
 
@@ -394,9 +399,9 @@
         loadWishes();
     }
 
-    // =====================
-    // INTERSECTION OBSERVER
-    // =====================
+    // ========================================
+    // INTERSECTION OBSERVER FOR FADE SECTIONS
+    // ========================================
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -407,9 +412,9 @@
     
     document.querySelectorAll('.fade-section').forEach(el => observer.observe(el));
 
-    // =====================
+    // ========================================
     // GALLERY LIGHTBOX
-    // =====================
+    // ========================================
     document.querySelectorAll('.gallery-img').forEach(img => {
         img.addEventListener('click', function() {
             const lightbox = document.createElement('div');
@@ -417,7 +422,7 @@
             
             const imgClone = document.createElement('img');
             imgClone.src = this.src;
-            imgClone.style.cssText = 'max-width:90%;max-height:90%;object-fit:contain;border-radius:10px;';
+            imgClone.style.cssText = 'max-width:90%;max-height:90%;object-fit:contain;border-radius:8px;';
             
             lightbox.appendChild(imgClone);
             document.body.appendChild(lightbox);
