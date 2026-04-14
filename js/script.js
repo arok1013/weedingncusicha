@@ -1,6 +1,11 @@
 (function() {
     "use strict";
 
+    // =====================
+    // GOOGLE APPS SCRIPT URL
+    // =====================
+    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby_DN2pad9OyDl7s2WBgzcny5kZgJCUZ5A97klbrcsHZHxhxf1DMlrDwAYR0gf6cqJixA/exec';
+
     // DOM Elements
     const overlay = document.getElementById('overlay');
     const mainContent = document.getElementById('main-content');
@@ -47,6 +52,9 @@
         }, 100);
         
         window.scrollTo(0, 0);
+        
+        // Load wishes dari Google Sheets saat undangan dibuka
+        loadWishesFromGoogleSheet();
     }
 
     if (openBtn) openBtn.addEventListener('click', openInvitation);
@@ -162,7 +170,9 @@
         }, 2000);
     }
 
-    // RSVP Form
+    // =====================
+    // RSVP FORM - KIRIM KE GOOGLE APPS SCRIPT
+    // =====================
     if (rsvpForm) {
         rsvpForm.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -180,28 +190,95 @@
                 timestamp: new Date().toISOString()
             };
             
-            await new Promise(resolve => setTimeout(resolve, 800));
-            
-            const wishes = JSON.parse(localStorage.getItem('wedding_wishes') || '[]');
-            wishes.unshift(data);
-            localStorage.setItem('wedding_wishes', JSON.stringify(wishes));
-            
-            rsvpForm.reset();
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = originalText;
-            
-            loadWishes();
-            showToast('🎉 Terima kasih! Doa restu Anda telah tercatat.');
+            try {
+                // Kirim data ke Google Apps Script
+                await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams(data).toString()
+                });
+                
+                // Simpan juga ke localStorage sebagai backup
+                const wishes = JSON.parse(localStorage.getItem('wedding_wishes') || '[]');
+                wishes.unshift(data);
+                localStorage.setItem('wedding_wishes', JSON.stringify(wishes));
+                
+                // Reset form
+                rsvpForm.reset();
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+                
+                // Reload wishes dari localStorage (karena no-cors tidak bisa baca response)
+                loadWishesFromLocalStorage();
+                showToast('🎉 Terima kasih! Doa restu Anda telah tercatat.');
+                
+            } catch (error) {
+                console.error('Error sending to Google Sheets:', error);
+                
+                // Fallback: tetap simpan ke localStorage
+                const wishes = JSON.parse(localStorage.getItem('wedding_wishes') || '[]');
+                wishes.unshift(data);
+                localStorage.setItem('wedding_wishes', JSON.stringify(wishes));
+                
+                rsvpForm.reset();
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+                
+                loadWishesFromLocalStorage();
+                showToast('🎉 Terima kasih! Doa restu Anda telah tercatat (offline).');
+            }
         });
     }
 
-    // Load Wishes
-    function loadWishes() {
-        const wishes = JSON.parse(localStorage.getItem('wedding_wishes') || '[]');
+    // =====================
+    // LOAD WISHES DARI GOOGLE SHEETS
+    // =====================
+    async function loadWishesFromGoogleSheet() {
+        if (wishesLoading) wishesLoading.style.display = 'flex';
         
+        try {
+            const response = await fetch(GOOGLE_SCRIPT_URL);
+            const text = await response.text();
+            
+            // Coba parse sebagai JSON
+            try {
+                const data = JSON.parse(text);
+                if (data && Array.isArray(data) && data.length > 0) {
+                    displayWishes(data);
+                    // Update localStorage dengan data terbaru
+                    localStorage.setItem('wedding_wishes', JSON.stringify(data));
+                } else {
+                    loadWishesFromLocalStorage();
+                }
+            } catch (parseError) {
+                console.log('Response is not JSON, loading from localStorage');
+                loadWishesFromLocalStorage();
+            }
+        } catch (error) {
+            console.error('Error fetching from Google Sheets:', error);
+            // Fallback ke localStorage
+            loadWishesFromLocalStorage();
+        }
+    }
+
+    // =====================
+    // LOAD WISHES DARI LOCALSTORAGE (FALLBACK)
+    // =====================
+    function loadWishesFromLocalStorage() {
+        const wishes = JSON.parse(localStorage.getItem('wedding_wishes') || '[]');
+        displayWishes(wishes);
+    }
+
+    // =====================
+    // DISPLAY WISHES
+    // =====================
+    function displayWishes(wishes) {
         if (wishesLoading) wishesLoading.style.display = 'none';
         
-        if (wishes.length === 0) {
+        if (!wishes || wishes.length === 0) {
             wishesList.innerHTML = `
                 <div class="text-center py-12 text-gray-400">
                     <i class="fa-regular fa-message text-4xl mb-4 opacity-30"></i>
@@ -212,11 +289,16 @@
             return;
         }
         
-        commentCountSpan.textContent = `${wishes.length} Ucapan`;
+        // Urutkan dari terbaru
+        const sortedWishes = [...wishes].sort((a, b) => {
+            return new Date(b.timestamp) - new Date(a.timestamp);
+        });
         
-        wishesList.innerHTML = wishes.map(wish => {
+        commentCountSpan.textContent = `${sortedWishes.length} Ucapan`;
+        
+        wishesList.innerHTML = sortedWishes.map(wish => {
             const badgeClass = wish.kehadiran === 'Hadir' ? 'badge-hadir' : 'badge-tidak';
-            const date = new Date(wish.timestamp);
+            const date = wish.timestamp ? new Date(wish.timestamp) : new Date();
             const formattedDate = `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`;
             
             return `
@@ -224,7 +306,7 @@
                     <div class="flex justify-between items-start mb-2">
                         <div>
                             <h5 class="font-semibold text-gray-800">${escapeHtml(wish.nama)}</h5>
-                            <span class="${badgeClass}">${wish.kehadiran}</span>
+                            <span class="${badgeClass}">${wish.kehadiran || 'Hadir'}</span>
                         </div>
                         <span class="text-xs text-gray-400">${formattedDate}</span>
                     </div>
@@ -234,15 +316,31 @@
         }).join('');
     }
 
+    // =====================
+    // ESCAPE HTML
+    // =====================
     function escapeHtml(text) {
+        if (!text) return '';
         const div = document.createElement('div');
         div.textContent = text;
         return div.innerHTML;
     }
 
-    if (wishesList) loadWishes();
+    // =====================
+    // INITIAL LOAD WISHES
+    // =====================
+    if (wishesList) {
+        // Load dari localStorage dulu (tampilan cepat)
+        loadWishesFromLocalStorage();
+        // Kemudian sync dengan Google Sheets di background
+        setTimeout(() => {
+            loadWishesFromGoogleSheet();
+        }, 500);
+    }
 
-    // Intersection Observer
+    // =====================
+    // INTERSECTION OBSERVER
+    // =====================
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -253,7 +351,9 @@
     
     document.querySelectorAll('.fade-section').forEach(el => observer.observe(el));
 
-    // Gallery Lightbox
+    // =====================
+    // GALLERY LIGHTBOX
+    // =====================
     document.querySelectorAll('.gallery-img').forEach(img => {
         img.addEventListener('click', function() {
             const lightbox = document.createElement('div');
