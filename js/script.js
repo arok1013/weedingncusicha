@@ -4,7 +4,7 @@
     // =====================
     // GOOGLE APPS SCRIPT URL
     // =====================
-    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby_DN2pad9OyDl7s2WBgzcny5kZgJCUZ5A97klbrcsHZHxhxf1DMlrDwAYR0gf6cqJixA/exec';
+    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxhzipjNGGYfuSby2wAcW5M4d0tbwXCSfmUG_2VOPZiOBrWG5EuEAjzuyxvG1gAbyvNyg/exec';
 
     // DOM Elements
     const overlay = document.getElementById('overlay');
