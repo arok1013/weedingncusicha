@@ -4,7 +4,7 @@
     // =====================
     // GOOGLE APPS SCRIPT URL
     // =====================
-    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxhzipjNGGYfuSby2wAcW5M4d0tbwXCSfmUG_2VOPZiOBrWG5EuEAjzuyxvG1gAbyvNyg/exec';
+    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby_DN2pad9OyDl7s2WBgzcny5kZgJCUZ5A97klbrcsHZHxhxf1DMlrDwAYR0gf6cqJixA/exec';
 
     // DOM Elements
     const overlay = document.getElementById('overlay');
@@ -33,14 +33,14 @@
         mainContent.classList.remove('hidden');
         musicToggle.classList.remove('hidden');
         
-        // AUTO-PLAY MUSIK saat undangan dibuka
+        // AUTO-PLAY MUSIK
         if (music) {
             music.volume = 0.5;
             music.play().then(() => {
                 musicBtn.innerHTML = '<i class="fas fa-pause"></i>';
                 musicBtn.classList.add('playing');
             }).catch(err => {
-                console.log('Autoplay blocked by browser:', err);
+                console.log('Autoplay blocked:', err);
                 musicBtn.innerHTML = '<i class="fas fa-music"></i>';
                 musicBtn.classList.remove('playing');
             });
@@ -53,13 +53,13 @@
         
         window.scrollTo(0, 0);
         
-        // Load wishes dari Google Sheets saat undangan dibuka
-        loadWishesFromGoogleSheet();
+        // Load wishes
+        loadWishes();
     }
 
     if (openBtn) openBtn.addEventListener('click', openInvitation);
 
-    // Music Toggle (Play/Pause)
+    // Music Toggle
     if (musicBtn) {
         musicBtn.addEventListener('click', () => {
             if (music.paused) {
@@ -67,7 +67,6 @@
                     musicBtn.innerHTML = '<i class="fas fa-pause"></i>';
                     musicBtn.classList.add('playing');
                 }).catch(err => {
-                    console.log('Playback prevented:', err);
                     showToast('🎵 Klik untuk memutar musik');
                 });
             } else {
@@ -83,11 +82,6 @@
         });
         
         music.addEventListener('pause', () => {
-            musicBtn.innerHTML = '<i class="fas fa-music"></i>';
-            musicBtn.classList.remove('playing');
-        });
-        
-        music.addEventListener('ended', () => {
             musicBtn.innerHTML = '<i class="fas fa-music"></i>';
             musicBtn.classList.remove('playing');
         });
@@ -114,21 +108,21 @@
             
             if (countdownEl) {
                 countdownEl.innerHTML = `
-                    <div class="bg-white p-4 md:p-6 rounded-2xl shadow-xl min-w-[80px] md:min-w-[100px] border border-gold/10">
+                    <div class="bg-white p-4 md:p-6 rounded-2xl shadow-xl min-w-[80px] border border-gold/10">
                         <span class="text-4xl md:text-6xl font-serif text-gold">${days}</span>
-                        <p class="text-xs md:text-sm uppercase tracking-wider mt-2 text-gray-500">Hari</p>
+                        <p class="text-xs uppercase tracking-wider mt-2 text-gray-500">Hari</p>
                     </div>
-                    <div class="bg-white p-4 md:p-6 rounded-2xl shadow-xl min-w-[80px] md:min-w-[100px] border border-gold/10">
+                    <div class="bg-white p-4 md:p-6 rounded-2xl shadow-xl min-w-[80px] border border-gold/10">
                         <span class="text-4xl md:text-6xl font-serif text-gold">${hours}</span>
-                        <p class="text-xs md:text-sm uppercase tracking-wider mt-2 text-gray-500">Jam</p>
+                        <p class="text-xs uppercase tracking-wider mt-2 text-gray-500">Jam</p>
                     </div>
-                    <div class="bg-white p-4 md:p-6 rounded-2xl shadow-xl min-w-[80px] md:min-w-[100px] border border-gold/10">
+                    <div class="bg-white p-4 md:p-6 rounded-2xl shadow-xl min-w-[80px] border border-gold/10">
                         <span class="text-4xl md:text-6xl font-serif text-gold">${minutes}</span>
-                        <p class="text-xs md:text-sm uppercase tracking-wider mt-2 text-gray-500">Menit</p>
+                        <p class="text-xs uppercase tracking-wider mt-2 text-gray-500">Menit</p>
                     </div>
-                    <div class="bg-white p-4 md:p-6 rounded-2xl shadow-xl min-w-[80px] md:min-w-[100px] border border-gold/10">
+                    <div class="bg-white p-4 md:p-6 rounded-2xl shadow-xl min-w-[80px] border border-gold/10">
                         <span class="text-4xl md:text-6xl font-serif text-gold">${seconds}</span>
-                        <p class="text-xs md:text-sm uppercase tracking-wider mt-2 text-gray-500">Detik</p>
+                        <p class="text-xs uppercase tracking-wider mt-2 text-gray-500">Detik</p>
                     </div>
                 `;
             }
@@ -183,85 +177,141 @@
             submitBtn.innerHTML = '<i class="fas fa-circle-notch fa-spin mr-2"></i> Mengirim...';
             
             const formData = new FormData(rsvpForm);
-            const data = {
-                nama: formData.get('nama'),
-                kehadiran: formData.get('kehadiran'),
-                pesan: formData.get('pesan'),
-                timestamp: new Date().toISOString()
-            };
+            const nama = formData.get('nama');
+            const kehadiran = formData.get('kehadiran');
+            const pesan = formData.get('pesan');
+            
+            // Data untuk dikirim
+            const postData = new URLSearchParams();
+            postData.append('nama', nama);
+            postData.append('kehadiran', kehadiran);
+            postData.append('pesan', pesan);
             
             try {
                 // Kirim data ke Google Apps Script
                 await fetch(GOOGLE_SCRIPT_URL, {
                     method: 'POST',
-                    mode: 'no-cors',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: new URLSearchParams(data).toString()
+                    body: postData
                 });
-                
-                // Simpan juga ke localStorage sebagai backup
-                const wishes = JSON.parse(localStorage.getItem('wedding_wishes') || '[]');
-                wishes.unshift(data);
-                localStorage.setItem('wedding_wishes', JSON.stringify(wishes));
                 
                 // Reset form
                 rsvpForm.reset();
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = originalText;
                 
-                // Reload wishes dari localStorage (karena no-cors tidak bisa baca response)
-                loadWishesFromLocalStorage();
+                // Tampilkan pesan sukses
                 showToast('🎉 Terima kasih! Doa restu Anda telah tercatat.');
                 
+                // TAMBAHKAN DATA BARU KE TAMPILAN SECARA OPTIMISTIC
+                addNewWishToDisplay({
+                    nama: nama,
+                    kehadiran: kehadiran,
+                    pesan: pesan,
+                    timestamp: new Date().toLocaleString('id-ID')
+                });
+                
+                // Refresh data dari server setelah beberapa detik
+                setTimeout(() => {
+                    loadWishesFromGoogleSheet();
+                }, 2000);
+                
             } catch (error) {
-                console.error('Error sending to Google Sheets:', error);
-                
-                // Fallback: tetap simpan ke localStorage
-                const wishes = JSON.parse(localStorage.getItem('wedding_wishes') || '[]');
-                wishes.unshift(data);
-                localStorage.setItem('wedding_wishes', JSON.stringify(wishes));
-                
-                rsvpForm.reset();
+                console.error('Error:', error);
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = originalText;
-                
-                loadWishesFromLocalStorage();
-                showToast('🎉 Terima kasih! Doa restu Anda telah tercatat (offline).');
+                showToast('❌ Gagal mengirim. Silakan coba lagi.');
             }
         });
     }
 
     // =====================
-    // LOAD WISHES DARI GOOGLE SHEETS
+    // TAMBAH WISH BARU KE TAMPILAN (OPTIMISTIC UPDATE)
     // =====================
-    async function loadWishesFromGoogleSheet() {
+    function addNewWishToDisplay(wish) {
+        // Sembunyikan loading
+        if (wishesLoading) wishesLoading.style.display = 'none';
+        
+        // Buat element baru
+        const badgeClass = wish.kehadiran === 'Hadir' ? 'badge-hadir' : 'badge-tidak';
+        const newWishHTML = `
+            <div class="wish-bubble" style="animation: slideUp 0.5s ease;">
+                <div class="flex justify-between items-start mb-2">
+                    <div>
+                        <h5 class="font-semibold text-gray-800">${escapeHtml(wish.nama)}</h5>
+                        <span class="${badgeClass}">${wish.kehadiran}</span>
+                    </div>
+                    <span class="text-xs text-gray-400">Baru saja</span>
+                </div>
+                <p class="text-gray-600 text-sm leading-relaxed">"${escapeHtml(wish.pesan)}"</p>
+            </div>
+        `;
+        
+        // Cek apakah ada ucapan sebelumnya
+        const existingContent = wishesList.innerHTML;
+        
+        if (existingContent.includes('Belum ada ucapan')) {
+            // Jika kosong, ganti seluruh konten
+            wishesList.innerHTML = newWishHTML;
+            commentCountSpan.textContent = '1 Ucapan';
+        } else {
+            // Jika sudah ada, tambahkan di paling atas
+            wishesList.innerHTML = newWishHTML + existingContent;
+            
+            // Update count
+            const currentCount = parseInt(commentCountSpan.textContent) || 0;
+            commentCountSpan.textContent = (currentCount + 1) + ' Ucapan';
+        }
+    }
+
+    // =====================
+    // LOAD WISHES DARI GOOGLE SHEETS (DENGAN JSONP)
+    // =====================
+    function loadWishesFromGoogleSheet() {
         if (wishesLoading) wishesLoading.style.display = 'flex';
         
-        try {
-            const response = await fetch(GOOGLE_SCRIPT_URL);
-            const text = await response.text();
-            
-            // Coba parse sebagai JSON
-            try {
-                const data = JSON.parse(text);
-                if (data && Array.isArray(data) && data.length > 0) {
-                    displayWishes(data);
-                    // Update localStorage dengan data terbaru
-                    localStorage.setItem('wedding_wishes', JSON.stringify(data));
-                } else {
-                    loadWishesFromLocalStorage();
-                }
-            } catch (parseError) {
-                console.log('Response is not JSON, loading from localStorage');
+        // Gunakan callback untuk JSONP
+        const callbackName = 'jsonpCallback_' + Date.now();
+        
+        window[callbackName] = function(data) {
+            if (data && Array.isArray(data) && data.length > 0) {
+                displayWishes(data);
+                localStorage.setItem('wedding_wishes', JSON.stringify(data));
+            } else {
                 loadWishesFromLocalStorage();
             }
-        } catch (error) {
-            console.error('Error fetching from Google Sheets:', error);
-            // Fallback ke localStorage
-            loadWishesFromLocalStorage();
-        }
+            
+            // Cleanup
+            document.head.removeChild(script);
+            delete window[callbackName];
+        };
+        
+        const script = document.createElement('script');
+        script.src = GOOGLE_SCRIPT_URL + '?callback=' + callbackName;
+        script.onerror = function() {
+            console.log('JSONP failed, trying fetch...');
+            // Fallback ke fetch dengan mode no-cors
+            fetch(GOOGLE_SCRIPT_URL)
+                .then(response => response.text())
+                .then(text => {
+                    try {
+                        const data = JSON.parse(text);
+                        if (Array.isArray(data)) {
+                            displayWishes(data);
+                            localStorage.setItem('wedding_wishes', JSON.stringify(data));
+                        } else {
+                            loadWishesFromLocalStorage();
+                        }
+                    } catch (e) {
+                        loadWishesFromLocalStorage();
+                    }
+                })
+                .catch(() => loadWishesFromLocalStorage());
+            
+            document.head.removeChild(script);
+            delete window[callbackName];
+        };
+        
+        document.head.appendChild(script);
     }
 
     // =====================
@@ -299,7 +349,7 @@
         wishesList.innerHTML = sortedWishes.map(wish => {
             const badgeClass = wish.kehadiran === 'Hadir' ? 'badge-hadir' : 'badge-tidak';
             const date = wish.timestamp ? new Date(wish.timestamp) : new Date();
-            const formattedDate = `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`;
+            const formattedDate = wish.timestamp ? wish.timestamp.split(',')[0] : `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`;
             
             return `
                 <div class="wish-bubble">
@@ -327,15 +377,21 @@
     }
 
     // =====================
-    // INITIAL LOAD WISHES
+    // LOAD WISHES (INITIAL)
     // =====================
+    function loadWishes() {
+        // Coba load dari localStorage dulu (tampilan cepat)
+        const localWishes = JSON.parse(localStorage.getItem('wedding_wishes') || '[]');
+        if (localWishes.length > 0) {
+            displayWishes(localWishes);
+        }
+        
+        // Kemudian sync dengan Google Sheets
+        loadWishesFromGoogleSheet();
+    }
+
     if (wishesList) {
-        // Load dari localStorage dulu (tampilan cepat)
-        loadWishesFromLocalStorage();
-        // Kemudian sync dengan Google Sheets di background
-        setTimeout(() => {
-            loadWishesFromGoogleSheet();
-        }, 500);
+        loadWishes();
     }
 
     // =====================
